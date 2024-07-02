@@ -193,12 +193,13 @@ return {
     config = function(_, opts)
       local telescope = require "telescope"
       telescope.setup(opts)
-
+      telescope.load_extension("remote-sshfs")
       -- load extensions
       for _, ext in ipairs(opts.extensions_list) do
         telescope.load_extension(ext)
       end
     end,
+    lazy=false,
   },
 
   {
@@ -240,5 +241,13 @@ return {
       }
     end,
     dependencies = { {'nvim-tree/nvim-web-devicons'}}
+  },
+  {
+   "nosduco/remote-sshfs.nvim",
+   dependencies = { "nvim-telescope/telescope.nvim" },
+   opts = {
+    -- Refer to the configuration section below
+    -- or leave empty for defaults
+   },
   }
 }
