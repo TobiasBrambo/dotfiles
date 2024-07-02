@@ -1,6 +1,6 @@
-# Dotfiles
+# Dotfiles WIP
 
-Repo containing dotfiles for my personal setup. Provided as is etc.etc.etc.
+.dotfiles for my personal setup. provided as is etc.etc.etc.
 
 
 .tmux.conf requires installing tpm for tmux plugins: `git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm`
@@ -8,6 +8,6 @@ Repo containing dotfiles for my personal setup. Provided as is etc.etc.etc.
 
 
 Can be applied using stow:
-1. Clone repo root.
+1. Clone repo to ~/
 2. cd to dotfiles
 3. run `stow .`
