@@ -8,6 +8,6 @@
 
 
 Can be applied using stow:
-1. Clone repo root.
+1. Clone repo to ~/
 2. cd to dotfiles
 3. run `stow .`
