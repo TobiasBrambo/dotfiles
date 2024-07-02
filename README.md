@@ -1,12 +1,13 @@
 # Dotfiles
 
-Repo containing dot files for my personal setup.
+Repo containing dotfiles for my personal setup. Provided as is etc.etc.etc.
 
-Requires installing tpm for tmux plugins: `git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm`
-`sudo apt install stow`
-`omz`
 
-## Usage:
+.tmux.conf requires installing tpm for tmux plugins: `git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm`
+.zshrc uses oh-my-zsh
+
+
+Can be applied using stow:
 1. Clone repo root.
 2. cd to dotfiles
 3. run `stow .`
