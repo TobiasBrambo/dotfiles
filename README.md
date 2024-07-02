@@ -1,6 +1,6 @@
 # Dotfiles
 
-Repo containing dotfiles for my personal setup. Provided as is etc.etc.etc.
+.dotfiles for my personal setup. Provided as is etc.etc.etc.
 
 
 .tmux.conf requires installing tpm for tmux plugins: `git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm`
