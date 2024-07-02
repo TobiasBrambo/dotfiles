@@ -7,6 +7,7 @@
 .zshrc uses oh-my-zsh
 
 
+
 Can be applied using stow:
 1. Clone repo to ~/
 2. cd to dotfiles
