@@ -1,4 +1,6 @@
 # check if zsh is installed, and set it as default shell
+cd ..
+
 if command -v zsh >/dev/null 2>&1; then
     echo "Zsh is installed."
     chsh -s $(which zsh)
@@ -28,3 +30,4 @@ git clone https://github.com/conda-incubator/conda-zsh-completion ${ZSH_CUSTOM:=
 # download and install pure theme
 mkdir -p "$HOME/.zsh"
 git clone https://github.com/sindresorhus/pure.git "$HOME/.zsh/pure"
+cd dotfiles
