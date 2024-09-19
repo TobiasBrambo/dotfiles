@@ -13,6 +13,7 @@ else
         echo "Set zsh as default shell."
     else
         echo "Failed to install zsh."
+    fi
 fi
 
 
