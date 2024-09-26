@@ -2,11 +2,11 @@
 
 .dotfiles for my personal setup. provided as is etc.etc.etc.
 
-Before install do sudo apt update, then run setup scripts for the parts you want.
+Before install do sudo apt update, then run setup scripts for the parts you want. During nvim install you will enter nvim sometimes, when it looks like any processing is done just exit `:q`
 
 After installation, install stow:
 
-sudo apt install stow
+`sudo apt install stow`
 
 then run this from `dotfiles` dir:
 
@@ -15,3 +15,8 @@ then run this from `dotfiles` dir:
 3. stow .
 
 now it should just work
+
+
+Note:
+if not using zsh, you need to add this to .bashrc or similar for nvim to work:
+export PATH="$PATH:/opt/nvim/"
