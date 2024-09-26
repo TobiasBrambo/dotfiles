@@ -25,6 +25,8 @@ else
   export EDITOR='nvim'
 fi
 
+export PATH="$PATH:/opt/nvim/"
+
 alias conda-init-zsh="~/anaconda3/bin/conda init zsh"
 
 # >>> conda initialize >>>
