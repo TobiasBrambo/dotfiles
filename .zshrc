@@ -29,6 +29,11 @@ export PATH="$PATH:/opt/nvim/"
 
 alias conda-init-zsh="~/anaconda3/bin/conda init zsh"
 
+export CUDA_HOME=/usr/local/cuda
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64
+export PATH=$PATH:$CUDA_HOME/bin
+
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/home/tobxtra/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"

@@ -187,13 +187,13 @@ return {
         ["<Tab>"] = cmp.mapping(function(fallback)
           if copilot_suggestion_visible() then
             -- Accept Copilot suggestion
-            vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<C-R>=copilot#Accept('')<CR>", true, true, true), "")
+            vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<C-R>=copilot#Accept()<CR>", true, true, true), "")
           elseif cmp.visible() and cmp.get_selected_entry() then
             -- If cmp menu is visible and an item is selected, confirm the selection
             cmp.confirm({ select = true })
           else
             -- Fallback to default behavior if no completion is available
-            fallback()
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, true, true), "n", true)
           end
         end, {"i", "s"}), -- Insert and Select modes
 
