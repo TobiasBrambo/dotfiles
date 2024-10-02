@@ -2,13 +2,21 @@
 
 .dotfiles for my personal setup. provided as is etc.etc.etc.
 
+Before install do sudo apt update, then run setup scripts for the parts you want. During nvim install you will enter nvim sometimes, when it looks like any processing is done just exit `:q`
 
-.tmux.conf requires installing tpm for tmux plugins: `git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm`
-.zshrc uses oh-my-zsh
+After installation, install stow:
+
+`sudo apt install stow`
+
+then run this from `dotfiles` dir:
+
+1. stow --adopt .
+2. git restore .
+3. stow .
+
+now it should just work
 
 
-
-Can be applied using stow:
-1. Clone repo to ~/
-2. cd to dotfiles
-3. run `stow .`
+Note:
+if not using zsh, you need to add this to .bashrc or similar for nvim to work:
+export PATH="$PATH:/opt/nvim/"

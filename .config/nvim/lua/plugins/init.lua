@@ -9,6 +9,7 @@ return {
   },
 
   {
+    nvchad = "NvChad/nvim",
     "NvChad/ui",
     branch = "v2.5",
     lazy = false,
@@ -135,53 +136,90 @@ return {
   },
 
   -- load luasnips + cmp related in insert mode only
-  {
-    "hrsh7th/nvim-cmp",
-    event = "InsertEnter",
-    dependencies = {
-      {
-        -- snippet plugin
-        "L3MON4D3/LuaSnip",
-        dependencies = "rafamadriz/friendly-snippets",
-        opts = { history = true, updateevents = "TextChanged,TextChangedI" },
-        config = function(_, opts)
-          require("luasnip").config.set_config(opts)
-          require "nvchad.configs.luasnip"
-        end,
-      },
-
-      -- autopairing of (){}[] etc
-      {
-        "windwp/nvim-autopairs",
-        opts = {
-          fast_wrap = {},
-          disable_filetype = { "TelescopePrompt", "vim" },
-        },
-        config = function(_, opts)
-          require("nvim-autopairs").setup(opts)
-
-          -- setup cmp for autopairs
-          local cmp_autopairs = require "nvim-autopairs.completion.cmp"
-          require("cmp").event:on("confirm_done", cmp_autopairs.on_confirm_done())
-        end,
-      },
-
-      -- cmp sources plugins
-      {
-        "saadparwaiz1/cmp_luasnip",
-        "hrsh7th/cmp-nvim-lua",
-        "hrsh7th/cmp-nvim-lsp",
-        "hrsh7th/cmp-buffer",
-        "hrsh7th/cmp-path",
-      },
+ {
+  "hrsh7th/nvim-cmp",
+  event = "InsertEnter",
+  dependencies = {
+    {
+      "L3MON4D3/LuaSnip",
+      dependencies = "rafamadriz/friendly-snippets",
+      opts = { history = true, updateevents = "TextChanged,TextChangedI" },
+      config = function(_, opts)
+        require("luasnip").config.set_config(opts)
+        require "nvchad.configs.luasnip"
+      end,
     },
-    opts = function()
-      return require "nvchad.configs.cmp"
-    end,
-    config = function(_, opts)
-      require("cmp").setup(opts)
-    end,
+    -- autopairing of (){}[] etc
+    {
+      "windwp/nvim-autopairs",
+      opts = {
+        fast_wrap = {},
+        disable_filetype = { "TelescopePrompt", "vim" },
+      },
+      config = function(_, opts)
+        require("nvim-autopairs").setup(opts)
+        local cmp_autopairs = require "nvim-autopairs.completion.cmp"
+        require("cmp").event:on("confirm_done", cmp_autopairs.on_confirm_done())
+      end,
+    },
+    -- cmp sources
+    "saadparwaiz1/cmp_luasnip",
+    "hrsh7th/cmp-nvim-lua",
+    "hrsh7th/cmp-nvim-lsp",
+    "hrsh7th/cmp-buffer",
+    "hrsh7th/cmp-path",
   },
+  opts = function()
+    local cmp = require "cmp"
+    
+    local has_words_before = function()
+      local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+      return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+    end
+
+    local copilot_suggestion_visible = function()
+      return vim.fn['copilot#GetDisplayedSuggestion']() ~= ''
+    end
+
+    return {
+      mapping = {
+        -- Tab: Handle both Copilot and nvim-cmp
+        ["<Tab>"] = cmp.mapping(function(fallback)
+          if copilot_suggestion_visible() then
+            -- Accept Copilot suggestion
+            vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<C-R>=copilot#Accept('')<CR>", true, true, true), "")
+          elseif cmp.visible() and cmp.get_selected_entry() then
+            -- If cmp menu is visible and an item is selected, confirm the selection
+            cmp.confirm({ select = true })
+          else
+            -- Fallback to default behavior if no completion is available
+            fallback()
+          end
+        end, {"i", "s"}), -- Insert and Select modes
+
+        -- Use Ctrl-n and Ctrl-p to cycle through cmp items
+        ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+        ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+
+        -- Enter: Confirm the current selection
+        ["<CR>"] = cmp.mapping.confirm({ select = true }),
+
+        -- Esc: Close cmp menu
+        ["<Esc>"] = cmp.mapping.close(),
+
+        -- Other bindings can be added here as needed
+      },
+      -- Other nvim-cmp options
+      sources = cmp.config.sources({
+        { name = 'nvim_lsp' },
+        { name = 'buffer' },
+      }),
+    }
+  end,
+  config = function(_, opts)
+    require("cmp").setup(opts)
+  end,
+},
 
   {
     "nvim-telescope/telescope.nvim",
