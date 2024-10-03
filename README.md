@@ -15,8 +15,3 @@ then run this from `dotfiles` dir:
 3. stow .
 
 now it should just work
-
-
-Note:
-if not using zsh, you need to add this to .bashrc or similar for nvim to work:
-export PATH="$PATH:/opt/nvim/"
