@@ -28,20 +28,5 @@ lspconfig.pyright.setup {
   on_attach = nvlsp.on_attach,
   capabilities = nvlsp.capabilities,
   filetypes = {"python"},
-  settings = {
-    pyright = {
-      -- Using ruff-lsp
-      disableOrganizeImport = true,
-    },
-    python = {
-      analysis = {
-        -- Using ruff-lsp
-        ignore = { '*' },
-      },
-    },
-  },
 }
 
-lspconfig.ruff_lsp.setup {
-  on_attach = nvlsp.on_attach,
-}

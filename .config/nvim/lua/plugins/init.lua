@@ -12,6 +12,14 @@ return {
       require "configs.lspconfig"
     end,
   },
+  {
+    "nvimtools/none-ls.nvim",
+    ft = {"python"},
+    config = function()
+      require("null-ls").setup()
+    end,
+    requires = {"nvim-lua/plenary.nvim"}
+  },
 
 
 }
