@@ -100,7 +100,7 @@ return {
   -- by downloading from the Jupyter Notebook server.
   -- WARNING: this will overwrite the file without asking
   -- Related command :JupyniumDownloadIpynb
-  auto_download_ipynb = true,
+  auto_download_ipynb = false,
 
   -- Automatically close tab that is in sync when you close buffer in vim.
   auto_close_tab = true,
