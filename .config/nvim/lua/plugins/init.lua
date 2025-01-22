@@ -37,7 +37,7 @@ return {
     }
   end
   },
-    {
+  {
     "kiyoon/jupynium.nvim",
     lazy=false,
     -- build = "pip3 install --user .",
@@ -159,9 +159,19 @@ return {
     },
   },
       })
-      
     end
   },
   "rcarriga/nvim-notify",   -- optional
   "stevearc/dressing.nvim", -- optional, UI for :JupyniumKernelSelect
+  {
+    "aserowy/tmux.nvim",
+
+    config = function ()
+      return require("tmux").setup({
+          copy_sync = {
+          enable=true
+        },
+      })
+    end
+  }
 }

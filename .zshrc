@@ -19,6 +19,31 @@ autoload -U promptinit; promptinit
 prompt pure
 
 
+
+# Add date-time to RPROMPT, adapted from: https://github.com/sindresorhus/pure/issues/667
+# eval "original_$(declare -f prompt_pure_preprompt_render)"
+# prompt_pure_preprompt_render() {
+#   local prompt_pure_date_color='239'
+#   local prompt_pure_date_format="[%y/%m/%d %H:%M:%S]"
+#   zstyle -t :prompt:pure:date color
+#   if [ $? -eq 1 ]; then
+#     zstyle -s :prompt:pure:date color prompt_pure_date_color
+#   fi
+#   zstyle -t :prompt:pure:date format
+#   if [ $? -eq 1 ]; then
+#     zstyle -s :prompt:pure:date format prompt_pure_date_format
+#   fi
+#   local prompt_pure_date=$(date "+$prompt_pure_date_format")
+#   original_prompt_pure_preprompt_render
+#   RPROMPT="%F{$prompt_pure_date_color}${prompt_pure_date}%f"
+# }
+
+# Add just time to RPROMPT
+RPROMPT="%F{214}%T%f"
+
+
+
+
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='nvim'
 else
