@@ -6,7 +6,14 @@ local map = vim.keymap.set
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
-map("i", "kj", "<ESC>")
+
+map("n", "j", function()
+  return vim.v.count > 0 and "j" or "gj"
+end, { expr = true, desc = "Move down (handle wrapped lines)" })
+
+map("n", "k", function()
+  return vim.v.count > 0 and "k" or "gk"
+end, { expr = true, desc = "Move up (handle wrapped lines)" })
 
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
 local unmap = vim.keymap.del
