@@ -8,7 +8,6 @@ ZSH_THEME="" # set by `omz`, using pure
 
 # Extra installed plugins
 plugins=(git zsh-autosuggestions zsh-syntax-highlighting web-search conda-zsh-completion)
-bindkey '^ ' autosuggest-accept
 
 source $ZSH/oh-my-zsh.sh
 
@@ -73,3 +72,5 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+
+ bindkey '^ ' autosuggest-accept
