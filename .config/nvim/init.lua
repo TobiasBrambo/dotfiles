@@ -39,3 +39,11 @@ vim.wo.relativenumber = true
 vim.schedule(function()
   require "mappings"
 end)
+
+
+vim.keymap.set("n", "<leader>mn", function ()
+  vim.api.nvim_put({
+    'if __name__ == "__main__":',
+    '    pass'
+  }, "l", true, true)
+end)
