@@ -16,8 +16,15 @@ map("n", "k", function()
 end, { expr = true, desc = "Move up (handle wrapped lines)" })
 
 
+-- manual formatting using conform
+vim.keymap.set("n", "<leader>lf", function()
+  require("conform").format({ async = true, lsp_fallback = true })
+end, { desc = "Format file with Conform" })
+
+
 vim.opt.clipboard = "unnamedplus"
 
+-- copy to clipboard
 if vim.fn.has("wsl") == 1 then
   vim.api.nvim_create_autocmd("TextYankPost", {
     group = vim.api.nvim_create_augroup("Yank", { clear = true }),
