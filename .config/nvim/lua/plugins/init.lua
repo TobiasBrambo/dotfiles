@@ -1,7 +1,7 @@
 return {
   {
     "stevearc/conform.nvim",
-    -- event = 'BufWritePre', -- uncomment for format on save
+    event = 'BufWritePre', -- uncomment for format on save
     opts = require "configs.conform",
   },
 
@@ -183,5 +183,134 @@ return {
             -- Configuration here, or leave empty to use defaults
         })
     end
-  }
+  },
+  {
+    "mfussenegger/nvim-dap",
+    config = function()
+      vim.keymap.set('n', '<F5>', function()
+        require('dap.ext.vscode').load_launchjs() -- Load launch.json every time we debug
+        require('dap').continue() end)
+      vim.keymap.set('n', '<F6>', function() require('dap').step_into() end)
+      vim.keymap.set('n', '<F7>', function() require('dap').step_over() end)
+      vim.keymap.set('n', '<F8>', function() require('dap').step_out() end)
+      vim.keymap.set('n', '<leader>dG', function() require('dap').run_to_cursor() end)
+    end,
+    lazy = false,
+  },
+
+  -- Have persistent breakpoints
+  {
+    'Weissle/persistent-breakpoints.nvim',
+    dependencies = {
+      'mfussenegger/nvim-dap',
+    },
+    config = function()
+      vim.keymap.set('n', '<leader>db', function() require("persistent-breakpoints.api").toggle_breakpoint() end)
+      vim.keymap.set('n', '<leader>dc',
+        function() require('persistent-breakpoints.api').set_conditional_breakpoint() end)
+      vim.keymap.set('n', '<leader>du', function() require('persistent-breakpoints.api').clear_all_breakpoints() end)
+      require('persistent-breakpoints').setup{
+        load_breakpoints_event = { "BufReadPost" }
+      }
+    end,
+    lazy = false,
+  },
+
+  {
+    'rcarriga/nvim-dap-ui',
+    dependencies = {
+      'mfussenegger/nvim-dap',
+    },
+    config = function()
+      local dap = require('dap')
+      local dapui = require('dapui')
+      dapui.setup({
+        layouts = {{
+          elements = { {
+              id = "scopes",
+              size = 0.55
+            }, {
+              id = "breakpoints",
+              size = 0.15
+            }, {
+              id = "stacks",
+              size = 0.15
+            }, {
+              id = "watches",
+              size = 0.15
+            } },
+          position = "left",
+          size = 50
+        }, {
+          elements = { {
+              id = "repl",
+              size = 0.3
+            }, {
+              id = "console",
+              size = 0.7
+            } },
+          position = "bottom",
+          size = 10
+        }},
+      })
+
+      dap.listeners.after.event_initialized['dapui_config'] = function()
+        dapui.open()
+      end
+
+      -- Uncomment for dap-ui GUI to close automatically after finishing a debugging session
+      dap.listeners.before.event_terminated['dapui_config'] = function()
+        dapui.close()
+      end
+
+      dap.listeners.before.event_exited['dapui_config'] = function()
+        dapui.close()
+      end
+    end
+  },
+
+  {
+    "mfussenegger/nvim-dap-python",
+    dependencies = {
+      'mfussenegger/nvim-dap',
+      'rcarriga/nvim-dap-ui',
+    },
+    config = function()
+      require("dap-python").setup()
+      vim.keymap.set('n', '<F4>', function() require('dap-python').debug_selection() end)
+    end,
+    lazy = false,
+  },
+  { "nvim-neotest/nvim-nio" },
+
+
+  -- {
+  --   "averms/black-nvim",
+  --   lazy = false,
+  --   ft = "python",
+  --   config = function()
+  --     vim.api.nvim_create_autocmd("BufWritePre", {
+  --       pattern = "*.py",
+  --       callback = function()
+  --         require("black").format()
+  --       end,
+  --     })
+  --   end
+  -- },
+  -- {
+  --   -- Flake8 (linter)
+  --   "mfussenegger/nvim-lint",
+  --   event = { "BufWritePost", "BufReadPost" },
+  --   config = function()
+  --     require("lint").linters_by_ft = {
+  --       python = { "flake8" },
+  --     }
+  --     vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" }, {
+  --       pattern = "*.py",
+  --       callback = function()
+  --         require("lint").try_lint()
+  --       end,
+  --     })
+  --   end
+  -- }
 }

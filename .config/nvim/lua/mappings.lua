@@ -15,6 +15,17 @@ map("n", "k", function()
   return vim.v.count > 0 and "k" or "gk"
 end, { expr = true, desc = "Move up (handle wrapped lines)" })
 
+
+vim.opt.clipboard = "unnamedplus"
+
+if vim.fn.has("wsl") == 1 then
+  vim.api.nvim_create_autocmd("TextYankPost", {
+    group = vim.api.nvim_create_augroup("Yank", { clear = true }),
+    callback = function()
+      vim.fn.system("clip.exe", vim.fn.getreg('"'))
+    end,
+  })
+end
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
 local unmap = vim.keymap.del
 
