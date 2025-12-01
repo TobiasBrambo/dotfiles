@@ -13,6 +13,20 @@ return {
     end,
   },
   {
+    "williamboman/mason.nvim",
+    opts = {
+      ensure_installed = {
+        "pyright",
+        "typescript-language-server",
+        "eslint-lsp",
+        "eslint_d",
+        "prettierd",
+        "html-lsp",
+        "css-lsp",
+      },
+    },
+  },
+  {
     "nvimtools/none-ls.nvim",
     ft = { "python" },
     config = function()
