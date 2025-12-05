@@ -199,6 +199,81 @@ return {
     end,
   },
   {
+    "rmagatti/alternate-toggler",
+    cmd = { "ToggleAlternate" },
+    config = function()
+      require("alternate-toggler").setup {}
+    end,
+  },
+  {
+    "AndrewRadev/switch.vim",
+    keys = {
+      { "<leader>ta", "<Plug>(Switch)", desc = "Switch word/alternate" },
+      { "<leader>tA", "<Plug>(SwitchReverse)", desc = "Switch word/alternate (reverse)" },
+    },
+    config = function()
+      vim.g.switch_mapping = ""
+      vim.g.switch_reverse_mapping = ""
+
+      local words = vim.fn["switch#Words"]
+      local ncwords = vim.fn["switch#NormalizedCaseWords"]
+
+      local base_defs = {
+        ncwords { "true", "false" },
+        ncwords { "yes", "no" },
+        ncwords { "on", "off" },
+        ncwords { "enable", "disable" },
+        { "0", "1" },
+        { "==", "!=" },
+        { "===", "!==" },
+        { "&&", "||" },
+        words { "let", "const" },
+        words { "interface", "type" },
+        words { "import", "export" },
+      }
+
+      vim.g.switch_custom_definitions = base_defs
+
+      local function extend_for_buffer(extra)
+        local merged = vim.deepcopy(base_defs)
+        vim.list_extend(merged, extra)
+        vim.b.switch_custom_definitions = merged
+      end
+
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "python" },
+        callback = function()
+          extend_for_buffer {
+            words { "and", "or" },
+            words { "in", "not in" },
+            words { "is", "is not" },
+          }
+        end,
+      })
+
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "c", "cpp", "cuda", "objc", "objcpp" },
+        callback = function()
+          extend_for_buffer {
+            words { "NULL", "nullptr" },
+            words { "struct", "class" },
+            words { "public", "private", "protected" },
+          }
+        end,
+      })
+
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "typescript", "typescriptreact", "javascript", "javascriptreact", "tsx", "jsx" },
+        callback = function()
+          extend_for_buffer {
+            words { "useState", "useReducer" },
+            words { "useEffect", "useLayoutEffect" },
+          }
+        end,
+      })
+    end,
+  },
+  {
     "mfussenegger/nvim-dap",
     config = function()
       vim.keymap.set("n", "<F5>", function()
