@@ -17,6 +17,7 @@ return {
     opts = {
       ensure_installed = {
         "pyright",
+        "copilot-language-server",
         "typescript-language-server",
         "eslint-lsp",
         "eslint_d",
@@ -25,6 +26,13 @@ return {
         "css-lsp",
       },
     },
+  },
+  {
+    "folke/sidekick.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("configs.sidekick").setup()
+    end,
   },
   {
     "nvimtools/none-ls.nvim",
@@ -484,6 +492,13 @@ return {
           },
         },
       }
+    end,
+  },
+  {
+    "nacro90/numb.nvim",
+    lazy = false,
+    config = function()
+      require("numb").setup()
     end,
   },
 }

@@ -35,3 +35,17 @@ vim.lsp.config("pyright", {
   },
 })
 vim.lsp.enable "pyright"
+
+-- Keep Copilot's defaults (sign-in commands, etc.) while layering NvChad capabilities.
+local copilot_defaults = vim.tbl_deep_extend("force", {}, vim.lsp.config["copilot"] or {})
+
+vim.lsp.config("copilot", vim.tbl_deep_extend("force", copilot_defaults, {
+  on_init = nvlsp.on_init,
+  capabilities = nvlsp.capabilities,
+  on_attach = function(client, bufnr)
+    if copilot_defaults.on_attach then
+      copilot_defaults.on_attach(client, bufnr)
+    end
+  end,
+}))
+vim.lsp.enable "copilot"
