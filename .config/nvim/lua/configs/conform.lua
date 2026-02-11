@@ -1,9 +1,34 @@
 local util = require "conform.util"
 
+local function has_ruff_config(ctx)
+  local root = util.root_file { "pyproject.toml" }(ctx)
+  if not root then
+    return false
+  end
+
+  local pyproject = root .. "/pyproject.toml"
+  local ok, lines = pcall(vim.fn.readfile, pyproject)
+  if not ok then
+    return false
+  end
+
+  for _, line in ipairs(lines) do
+    if line:match "^%s*%[tool%.ruff%]" then
+      return true
+    end
+  end
+
+  return false
+end
+
+local function use_ruff_format(ctx)
+  return vim.fn.executable "ruff" == 1 and has_ruff_config(ctx)
+end
+
 local options = {
   formatters_by_ft = {
     lua = { "stylua" },
-    python = { "black" },
+    python = { "ruff_format", "black" },
     javascript = { "eslint_d" },
     typescript = { "eslint_d" },
     javascriptreact = { "eslint_d" },
@@ -70,6 +95,16 @@ local options = {
       },
       condition = function(ctx)
         return ctx.cwd ~= nil
+      end,
+    },
+    ruff_format = {
+      condition = function(ctx)
+        return use_ruff_format(ctx)
+      end,
+    },
+    black = {
+      condition = function(ctx)
+        return not use_ruff_format(ctx)
       end,
     },
   },
